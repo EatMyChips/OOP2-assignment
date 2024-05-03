@@ -9,6 +9,10 @@ namespace OOP2_Assignment_actual_ {
   class Testing {
     SevensOut sevensOut = new SevensOut();
     ThreeOrMore threeOrMore = new ThreeOrMore();
+
+    /// <summary>
+    /// used to test the games
+    /// </summary>
     public void TestGames() {
       int _intInput = 0;
 
@@ -26,17 +30,31 @@ namespace OOP2_Assignment_actual_ {
 
         switch (_intInput) {
           case 1:
-            Console.WriteLine("sevens out test");
             for (int i = 0; i <= 1000; i++) {
               sevensOut.Game(false, true);
               Debug.Assert(sevensOut._die1.Value + sevensOut._die2.Value == 7 , "The values dont add up to equal 7");
             }
+            Console.WriteLine("Testing done");
             break;
           case 2:
-            Console.WriteLine("three or more test");
             for(int i = 0; i <= 1000; i++) {
-              Debug.Assert(threeOrMore.Play(true) ,);
+              List<int> _scores1 = [];
+              int total1 = 0;
+              List<int> _scores2 = [];
+              int total2 = 0;
+              (_scores1, _scores2) = threeOrMore.Play(true);
+              Debug.Assert(threeOrMore.Score1 <= 20 || threeOrMore.Score2 <= 20, "Both players went over 20");
+
+              foreach(int j in _scores1) {
+                total1 += j;
+              }
+              foreach(int j in _scores2) {
+                total2 += j;
+              }
+
+              Debug.Assert(total1 == threeOrMore.Score1 || total2 == threeOrMore.Score2, "a score does not equal the right ammount");
             }
+            Console.WriteLine("Testing done");
             break;
         }
       }

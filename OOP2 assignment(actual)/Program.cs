@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 
 namespace OOP2_assignment_actual_ {
   class Program {
+    /// <summary>
+    /// The main function that runs when the programme starts
+    /// </summary>
+    /// <param name="args"></param>
     static void Main(string[] args) {
       SevensOut sevensOut = new SevensOut();
       ThreeOrMore threeOrMore = new ThreeOrMore();
-      Statistics statistics = new Statistics();
       Testing testing = new Testing();
- 
+
+      Statistics.OnStart();
       int _intInput = 0;
       while (_intInput != 5) {
         string _input = " ";
@@ -35,7 +39,7 @@ namespace OOP2_assignment_actual_ {
             threeOrMore.Play(false);
             break;
           case 3:
-            statistics.ViewStatistics();
+            Statistics.ViewStatistics();
             break;
           case 4:
             testing.TestGames();

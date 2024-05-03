@@ -9,42 +9,90 @@ using System.Linq;
 namespace OOP2_Assignment_actual_ {
   class ThreeOrMore : Game {
 
-    int Score1 = 0;
+    public int Score1 { get; private set; } = 0;
     int Player1Turns = 0;
-    int Score2 = 0;
+    public List<int> Scores1 { get; private set; } = new List<int>();
+    public int Score2 { get; private set; } = 0;
     int Player2Turns = 0;
+    public List<int> Scores2 { get; private set; } = new List<int>();
     List<Die> _dice = [];
 
-    protected override void _play(bool multiplayer, bool testing) {
+    protected override (List<int> _scores1, List<int> _scores2) _play(bool multiplayer, bool testing) {
+      Score1 = 0;
+      Score2 = 0;
+      Player1Turns = 0;
+      Player2Turns = 0;
+
       while (Score1 < 20 || Score2 < 20) {
-        Console.WriteLine("----------------------------------------------");
-        Console.WriteLine("Player 1 go");
-        Score1 += Game(true, false);
-        Player1Turns++;
+        if (!testing) {
+          Console.WriteLine("----------------------------------------------");
+          Console.WriteLine("Player 1 go");
+          int _score1 = 0;
+          _score1 = Game(true, false);
+          Score1 += _score1;
+          Scores1.Add(_score1);
+          Player1Turns++;
 
-        Console.WriteLine("\n----------------------------------------------");
-        if (multiplayer) {
-          Console.WriteLine("Player 2 go");
+          if (Score1 >= 20) {
+            break;
+          }
+
+          Console.WriteLine("\n----------------------------------------------");
+          if (multiplayer) {
+            Console.WriteLine("Player 2 go");
+          }
+          else {
+            Console.WriteLine("Ai go");
+          }
+          int _score2 = 0;
+          _score2 = Game(multiplayer, false);
+          Score2 += _score2;
+          Scores2.Add(_score2);
+          Player2Turns++;
+
+          Console.WriteLine("----------------------------------------------");
+          Console.WriteLine("Current Scores:");
+          Console.WriteLine($"Player 1 score {Score1}");
+          if (multiplayer) {
+
+            Console.WriteLine($"Player 2 score {Score2}");
+          }
+          else {
+            Console.WriteLine($"AI score {Score2}");
+          }
         }
         else {
-          Console.WriteLine("Ai go");
-        }
-        Score2 += Game(multiplayer, false);
-        Player2Turns++;
+          int _score1 = 0;
+          _score1 = Game(false, true);
+          Score1 += _score1;
+          Scores1.Add(_score1);
+          Player1Turns++;
 
-        Console.WriteLine("----------------------------------------------");
-        Console.WriteLine("Current Scores:");
-        Console.WriteLine($"Player 1 score {Score1}");
-        if (multiplayer) {
+          if (Score1 >= 20) {
+            break;
+          }
 
-          Console.WriteLine($"Player 2 score {Score2}");
-        }
-        else {
-          Console.WriteLine($"AI score {Score2}");
+          int _score2 = 0;
+          _score2 = Game(false, true);
+          Score2 += _score2;
+          Scores2.Add(_score2);
+          Player2Turns++;
         }
       }
+
+      Statistics.ThreeLeastRolls(Player1Turns);
+      Statistics.ThreeLeastRolls(Player2Turns);
+      Statistics.ThreeHighestScore(Score2);
+      Statistics.ThreeHighestScore(Score1);
+      return (Scores1, Scores2);
     }
 
+    /// <summary>
+    /// plays the main game functionality for one of the players
+    /// </summary>
+    /// <param name="player">is it a player or ai</param>
+    /// <param name="testing">is it being run in testing mode</param>
+    /// <returns>the score for that game</returns>
     public int Game(bool player , bool testing) {
       _dice = [];
 
